@@ -1,18 +1,24 @@
 {
   "name": "p7_perrin_mickael",
   "version": "1.0.0",
-  "description": "Projet 7 développeur web - création d'un réseau social interne",
+  "description": "Projet 7 Développeur Web - Groupomania - Création d'un réseau social d'entreprise",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "node.js",
-    "express",
-    "sequelize",
-    "mysql",
-    "vue.js"
-  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mickouckou/MickaelPERRIN_7_10082021.git"
+  },
   "author": "Mickaël PERRIN",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mickouckou/MickaelPERRIN_7_10082021/issues"
+  },
+  "homepage": "https://github.com/Mickouckou/MickaelPERRIN_7_10082021#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^2.3.0",
+    "sequelize": "^6.6.5"
+  }
 }
