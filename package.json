@@ -1,0 +1,18 @@
+{
+  "name": "p7_perrin_mickael",
+  "version": "1.0.0",
+  "description": "Projet 7 développeur web - création d'un réseau social interne",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node.js",
+    "express",
+    "sequelize",
+    "mysql",
+    "vue.js"
+  ],
+  "author": "Mickaël PERRIN",
+  "license": "ISC"
+}
