@@ -108,37 +108,27 @@ module.exports = {
             return res.status(500).json({ 'error': 'Incapable de vérifier l\'utilisateur' });
         });*/
     },
-    login: function(req, res) {
-        var email    = req.body.email;
-        var password = req.body.password;
-        
-        if (email == null || password == null) {
-            return res.status(400).json({ 'error': 'paramètres manquants !' });
-        }
-
-        //  TODO
-        models.User.findOne ({
-            where: { email: email }
+    login: function (req, res, next) {
+        models.User.findOne({ 
+            where: { email: req.body.email }
         })
         .then(function(userFound) {
-            if(userFound) {
-                bcrypt.compare(password, userFound.password, function(errBycrypt, resBycrypt) {
-                    if(resBycrypt) {
-                        return res.status(200).json({ 
-                            'userId': userFound.id, 
-                            'token': jwtUtils.generateToken(userFound)
-                        });
-                    } else {
-                        return res.status(404).json({ 'error': 'Mot de passe invalide' }); 
-                    } 
-                })
-            } else {
-                return res.status(404).json({ 'error': 'L\'utilisateur n\'existe pas dans la base de données' });
+            if (!userFound) {
+                return res.status(401).json({ error: 'Utilisateur non trouvé !' });
             }
-        }) 
-        .catch(function(err) {
-            return res.status(500).json({ 'error': 'Incapable de vérifier l\'utilisateur' });
-        });
+            bcrypt.compare(req.body.password, userFound.password)
+                .then(function(valid) {
+                    if (!valid) {
+                        return res.status(401).json({ error: 'Mot de passe incorrect !' });
+                    }
+                    res.status(200).json({
+                        'userId': userFound.id,
+                        'token': jwtUtils.generateToken(userFound)
+                    });
+                })
+                .catch(error => res.status(500).json({ error }));
+            })
+        .catch(error => res.status(500).json({ error }));
     },
     getUserProfile: function(req, res) {
         //  Récupération de l'entête d'identification
@@ -149,8 +139,8 @@ module.exports = {
             return res.status(400).json({ 'error': 'Mauvais token' });
 
         models.User.findOne({
-            attributes: ['id', 'email', 'username', 'avatar'],
-            where: { id: userId }
+            attributes: ['id', 'email', 'username', 'avatar']/*,
+            where: { id: userId }*/
         }) .then (function(user) {
             if (user) {
                 res.status(201).json(user);
@@ -208,7 +198,7 @@ module.exports = {
 
         models.User.destroy({
             where: { id: userId }
-          })
+        })
         .then(function() { 
             return res.status(500).json({ 'message': 'Utilisateur supprimé'});
         }) .catch (function(err) {
