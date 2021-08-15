@@ -92,5 +92,59 @@ module.exports = {
             console.log(err);
             res.status(500).json({ 'error': 'champs invalides' });
         });
+    },
+    modifyMessage: function(req, res) {
+        //  Récupération de l'identifiant du message
+        var messageId = req.params.id;
+
+        //  Paramètres
+        var title = req.body.title;
+        var content = req.body.content;
+
+        asyncLib.waterfall([
+            function(done) {
+                models.Message.findOne({
+                    attributes: ['id', 'title', 'content'],
+                    where: { id: messageId}
+                }) .then (function (messageFound) {
+                    done(null, messageFound);
+                }) .catch (function(err) {
+                    return res.status(500).json({'error': 'incapable de vérifier le message'});
+                });
+            },
+            function(messageFound, done) {
+                if (messageFound) {
+                    messageFound.update({
+                        title: (title ? title : messageFound.title),
+                        content: (content ? content : messageFound.content)
+                    }) .then (function() {
+                        done(messageFound);
+                    }) .catch (function(err) {
+                        res.status(500).json({'error': 'impossible de modifier le message'});
+                    });
+                } else {
+                    res.status(404).json({'error': 'Message non trouvé'});
+                }
+            },
+        ], function (messageFound) {
+            if(messageFound) {
+                return res.status(201).json(messageFound);
+            } else {
+                res.status(500).json({'error': 'incapable de modifier le message en cours'});
+            }
+        });
+    },
+    deleteMessage: function(req, res) {
+        //  Récupération de l'identifiant du message
+        var messageId = req.params.id;
+
+        models.Message.destroy({
+            where: { id: messageId }
+          })
+        .then(function() { 
+            return res.status(500).json({ 'message': 'Message supprimé'});
+        }) .catch (function(err) {
+            return res.status(500).json({ 'error': 'On ne peut pas supprimer le message' });
+        });
     }
 }

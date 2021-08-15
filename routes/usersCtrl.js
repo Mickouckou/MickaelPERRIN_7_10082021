@@ -18,19 +18,16 @@ module.exports = {
         var password = req.body.password;
         var avatar = req.body.avatar;
         
-        if (email == null || username == null || password == null) {
+        if (email === null || username === null || password === null) {
             return res.status(400).json({ 'error': 'paramètres manquants !' });
         }
-
-        if(username.length >= 16 || username.length <=3) {
+        else if(username.length >= 16 || username.length <=3) {
             return res.status(400).json({ 'error': 'le nom d\'utilisateur doit contenir entre 4 et 15 caractères' });
         }
-
-        if(!EMAIL_REGEX.test(email)) {
+        else if(!EMAIL_REGEX.test(email)) {
             return res.status(400).json({ 'error': 'Veuillez entrer un email valide' });
         }
-
-        if(!PASSWORD_REGEX.test(password)) {
+        else if(!PASSWORD_REGEX.test(password)) {
             return res.status(400).json({ 'error': 'Mdp entre 4 et 12 caractères avec au moins un chiffre'});
         }
 
@@ -73,7 +70,7 @@ module.exports = {
                 }); 
             }
         ], function (newUser) {
-            if(newUserr) {
+            if(newUser) {
                 return res.status(201).json({ 'userId': newUser.id});
             } else {
                 return res.status(404).json({ 'error': 'impossibilité d\'ajouter un utilisateur'});
@@ -203,5 +200,19 @@ module.exports = {
                 res.status(500).json({'error': 'incapable de modifier le profil utilisateur'});
             }
         });
-    }
+    },
+    deleteUserProfile (req, res, next) {
+        //  Récupération de l'entête d'identification
+        var headerAuth = req.headers['authorization'];
+        var userId = jwtUtils.getUserId(headerAuth);
+
+        models.User.destroy({
+            where: { id: userId }
+          })
+        .then(function() { 
+            return res.status(500).json({ 'message': 'Utilisateur supprimé'});
+        }) .catch (function(err) {
+            return res.status(500).json({ 'error': 'On ne peut pas supprimer l\'utilisateur' });
+        });
+    }   
 }
