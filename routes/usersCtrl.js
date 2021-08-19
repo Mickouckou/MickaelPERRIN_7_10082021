@@ -71,7 +71,10 @@ module.exports = {
             }
         ], function (newUser) {
             if(newUser) {
-                return res.status(201).json({ 'userId': newUser.id});
+                return res.status(201).json({ 
+                    'userId': newUser.id,
+                    'token': jwtUtils.generateToken(newUser)
+                });
             } else {
                 return res.status(404).json({ 'error': 'impossibilité d\'ajouter un utilisateur'});
             }
