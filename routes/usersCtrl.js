@@ -10,7 +10,7 @@ const PASSWORD_REGEX = /^(?=.*\d).{4,12}$/;
 
 //  Routes
 module.exports = {
-    register: function(req, res) {
+    register: function(req, res, next) {
         
         //  Paramètres
         var email    = req.body.email;
@@ -133,8 +133,9 @@ module.exports = {
             })
         .catch(error => res.status(500).json({ error }));
     },
-    getUserProfile: function(req, res) {
+    getUserProfile: function(req, res, next) {
         //  Récupération de l'entête d'identification
+        //const userId = req.params.id;
         var headerAuth = req.headers['authorization'];
         var userId = jwtUtils.getUserId(headerAuth);
 
@@ -142,8 +143,8 @@ module.exports = {
             return res.status(400).json({ 'error': 'Mauvais token' });
 
         models.User.findOne({
-            attributes: ['id', 'email', 'username', 'avatar']/*,
-            where: { id: userId }*/
+            attributes: ['id', 'email', 'username', 'avatar'],
+            where: { id: userId }
         }) .then (function(user) {
             if (user) {
                 res.status(201).json(user);
@@ -154,7 +155,7 @@ module.exports = {
             return res.status(500).json({ 'error': 'On ne peut pas aller chercher l\'utilisateur' });
         });
     },
-    updateUserProfile: function(req, res) {
+    updateUserProfile: function(req, res, next) {
         //  Récupération de l'entête d'identification
         var headerAuth = req.headers['authorization'];
         var userId = jwtUtils.getUserId(headerAuth);

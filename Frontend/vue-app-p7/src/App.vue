@@ -1,13 +1,13 @@
 <template>
     <div id="app">    
-        <header>
+        <!--<header>
             <div id="nav">
-                <router-link to="/" v-if="idUtilisateur === null">Se connecter</router-link> |
-                <router-link to="/register" v-if="idUtilisateur === null">S'inscrire</router-link> |
-                <router-link to="/profil" v-if="idUtilisateur != null">Profil</router-link> |
-                <router-link to="/home" v-if="idUtilisateur != null">Accueil</router-link>
+                <router-link to="/" v-if="idUtilisateur === null">Se connecter</router-link> &nbsp;
+                <router-link to="/register" v-if="idUtilisateur === null">S'inscrire</router-link> &nbsp;
+                <router-link to="/profil" v-if="idUtilisateur != null">Profil</router-link> &nbsp;
+                <router-link to="/messages" v-if="idUtilisateur != null">Messages</router-link>
             </div>
-        </header>
+        </header>-->
 
         <router-view/>
 
@@ -25,7 +25,7 @@ export default {
 		return {
 			firmName: "Groupomania",
 			infoFirm: "tous droits réservés",
-            idUtilisateur: JSON.parse(localStorage.getItem('userId')) || null
+            idUtilisateur: JSON.parse(localStorage.getItem('userId')),
 		}
 	},
 	computed: {

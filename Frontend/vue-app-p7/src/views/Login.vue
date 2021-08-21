@@ -1,5 +1,12 @@
 <template>
     <div class="login">
+        <header>
+            <div id="nav">
+                <router-link to="/">Se connecter</router-link> &nbsp;
+                <router-link to="/register">S'inscrire</router-link>
+            </div>
+        </header>
+
         <h1>Se connecter</h1>
 
         <div class="formulaire">    
@@ -8,7 +15,7 @@
                     <legend>Se connecter</legend>
                     <label for="emaillog">Email :</label><input type="text" name="emaillog" id="emaillog" /><br>
                     <label for="passwordlog">Mot de passe :</label><input type="password" name="passwordlog" id="passwordlog" /><br>
-                    <input type="submit" @click="userLogin" value="Se connecter">
+                    <input type="submit" @click.prevent="userLogin" value="Se connecter">
                 </fieldset>
             </form>
         </div>
@@ -31,7 +38,7 @@ export default {
                 const userToken = response.data.token;
                 localStorage.setItem('userToken', JSON.stringify(userToken));
                 localStorage.setItem('userId', JSON.stringify(userId));
-                document.location.replace('http://localhost:8081/#/profil');
+                document.location.replace('http://localhost:8081/#/messages');
             })
             .catch(function (error) {
                 console.log(error);
