@@ -58,4 +58,9 @@ export default {
         }
     }
 }
+
+form{
+    width:800px;
+    margin: auto;
+}
 </style>

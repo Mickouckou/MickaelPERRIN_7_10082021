@@ -162,11 +162,13 @@ module.exports = {
 
         //  Paramètres
         var avatar = req.body.avatar;
+        var email = req.body.email;
+        var username = req.body.username;
 
         asyncLib.waterfall([
             function(done) {
                 models.User.findOne({
-                    attributes: ['id', 'avatar'],
+                    attributes: ['id', 'email', 'username', 'avatar'],
                     where: { id: userId }
                 }) .then (function (userFound) {
                     done(null, userFound);
@@ -177,6 +179,8 @@ module.exports = {
             function(userFound, done) {
                 if (userFound) {
                     userFound.update({
+                        email: (email ? email : userFound.email),
+                        username: (username ? username : userFound.username),
                         avatar: (avatar ? avatar : userFound.avatar)
                     }) .then (function() {
                         done(userFound);
@@ -204,7 +208,7 @@ module.exports = {
             where: { id: userId }
         })
         .then(function() { 
-            return res.status(500).json({ 'message': 'Utilisateur supprimé'});
+            return res.status(201).json({ 'message': 'Utilisateur supprimé'});
         }) .catch (function(err) {
             return res.status(500).json({ 'error': 'On ne peut pas supprimer l\'utilisateur' });
         });

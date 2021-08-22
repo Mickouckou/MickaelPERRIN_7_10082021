@@ -5,6 +5,7 @@
                 <router-link to="/profil">Profil</router-link> &nbsp;
                 <router-link to="/messages">Messages</router-link>
             </div>
+            <button class="button" id="logout" @click="logout">Se déconnecter</button>
         </header>
 
         <AfficheMessages />

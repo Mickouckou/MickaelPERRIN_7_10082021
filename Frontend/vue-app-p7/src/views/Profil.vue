@@ -5,12 +5,11 @@
                 <router-link to="/profil">Profil</router-link> &nbsp;
                 <router-link to="/messages">Messages</router-link>
             </div>
+            <button class="button" id="logout" @click="logout">Se déconnecter</button>
         </header>
         
-        <AfficheProfil />
-        <!--<button class="button" id="profil" @click.prevent="userProfile">Afficher le profil</button>-->
         <!-- Code généré par le JavaScript -->
-        <button class="button" id="logout" @click="logout">Se déconnecter</button>
+        <AfficheProfil />
     </div>
 </template>
 
