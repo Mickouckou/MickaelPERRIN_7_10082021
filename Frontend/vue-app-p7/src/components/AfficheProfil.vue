@@ -15,7 +15,6 @@ export default {
     name: 'AfficheProfil',
     methods: {
         updateUser(){
-            alert("demande de Maj");
             updateOneUser();
         },
         deleteUser(){
@@ -104,7 +103,6 @@ function updateOneUser(){
                 avatar = document.getElementById('avatar').value;
             else*/
                 avatar = avatarbdd;
-            alert (email + " : " + username + " : " + avatar);
             if (userToken === null){
                 return status(400).json({ 'error': 'Mauvais token' });
             } else {

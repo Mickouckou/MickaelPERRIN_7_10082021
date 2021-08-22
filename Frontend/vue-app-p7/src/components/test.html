@@ -1,0 +1,54 @@
+<h1>" + username + " </h1>
+<div>
+    <form>
+        <table>
+            <tr>
+                <td>
+                    <label for="email">Email :</label><input type="text" name="email" id="email" required /><p id="emailPasConforme"></p><br>
+                    <label for="username">Nom d'utilisateur :</label><input type="text" name="username" id="username" required /><p id="usernamePasConforme"></p><br>
+                </td>
+                <td>
+                    <img src=\"" + avatar + "\" alt=\"" + username + "\"><br>
+                    <button class="button" @click.prevent="updateUser">Mettre à jour</button><br>
+                    <button class="button" @click.prevent="deleteUser">Supprimer le compte</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+    
+<h1>" + username + " </h1><form><table><tr><td>
+                    <label for="email">Email :</label><input type="text" name="email" id="email" required /><p id="emailPasConforme"></p><br>
+                    <label for="username">Nom d'utilisateur :</label><input type="text" name="username" id="username" required /><p id="usernamePasConforme"></p><br>
+                </td><td>
+                    <img src=\"" + avatar + "\" alt=\"" + username + "\"><br>
+                    <button class="button" @click.prevent="updateUser">Mettre à jour</button><br>
+                    <button class="button" @click.prevent="deleteUser">Supprimer le compte</button>
+                </td></tr></table></form>
+
+
+<!--------- Messages -->
+<div class="card">
+    <div class="titrecard">
+        <h2>" + tableau.title + "</h2>
+        <p>par " + tableau.User.username + "</p>
+    </div>
+    <div class="contentcard">
+        <div>
+            <img src=\"" + tableau.image + "\" alt=\"" + tableau.image + "\">
+        </div>
+        <div>" + tableau.content + "</div>
+    </div>
+    <div class="commentcard" id="commentcard">
+
+    </div>
+</div>
+
+
+<div class="card"><div class="titrecard"><h2>" + tableau.title + "</h2><p>par " + tableau.User.username + "</p></div>
+    <div class="contentcard">
+        <div><img src=\"" + tableau.image + "\" alt=\"" + tableau.image + "\"></div>
+        <div>" + tableau.content + "</div></div>
+    <div class="commentcard" id="commentcard">
+        
+    </div></div>
