@@ -1,47 +1,47 @@
+<template>
+    <div v-if="messages.length !== 0">
+        <div v-for="(message, id) in messages.slice()" v-bind:key="id" class="card">
+            <div class="titrecard">
+                <h2>{{ message.title }}</h2><p>par {{ message.User.username }}</p>
+            </div>
+            <div class="contentcard">
+                <div>
+                    <img v-if="message.image !== '' && message.image !== null && (message.image.split('.')[2] === 'png' || 'jpg')" :src="message.image" alt="image">
+                </div>
+                <div>{{ message.content }}</div>
+            </div>
+            <div class="commentcard">
+            
+            </div>
+        </div>
+    </div>
+    <div v-else>
+        <h1>Pas de poste actuellement</h1>
+    </div>
+</template>
+    
 <script>
 const axios = require('axios');
 //const userToken = JSON.parse(localStorage.getItem('userToken')) || null;
-showMessages();
 
 export default {
-    name: 'AfficheMessages'  
-}
+    name: 'AfficheMessages',
+    data(){
+        return{
+            messages:[]
+        };
+    },
 
+    async created(){
+        this.messages = [];
 
-//  Fonctions
-function showMessages() {
-    axios.get('http://localhost:8080/api/messages/', {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(function(response) {
-        const nbMessages = response.data.length;
-        for (let i = 0; i < nbMessages; i++) {
-            showMessage(response.data[i]);
-        }
-    })
-    .catch(function (error) {
-        console.log(error);
-        alert(error);
-    });
-}
-
-//Affichage des messages sur le mur
-function showMessage(tableau){
-    const nouvelleDiv = document.createElement("div");
-    let elementMain = document.getElementById("messages");
-    elementMain.appendChild(nouvelleDiv);
-    let chaine ="<div class=\"card\"><div class=\"titrecard\"><h2>" + tableau.title + "</h2><p>par " + tableau.User.username + "</p></div>"
-    chaine += "<div class=\"contentcard\">";
-    if (tableau.image != null)
-        chaine += "<div><img src=\"" + tableau.image + "\" alt=\"" + tableau.image + "\"></div>";
-    chaine += "<div>" + tableau.content + "</div></div>";
-    chaine += "<div class=\"commentcard\" id=\"commentcard\">";
-    chaine += "</div></div>";
-    nouvelleDiv.innerHTML=chaine;
-
-    //nouvelleDiv.innerHTML= tableau.title;
+        await axios
+            .get('http://localhost:8080/api/messages/')
+            .then(
+                (response) => ((this.messages = response.data), console.log(response))
+            )
+            .catch((error) => console.log(error));
+    }
 }
 </script>
 

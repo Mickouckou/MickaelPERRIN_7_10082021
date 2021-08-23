@@ -1,13 +1,5 @@
 <template>
     <div id="app">    
-        <!--<header>
-            <div id="nav">
-                <router-link to="/" v-if="idUtilisateur === null">Se connecter</router-link> &nbsp;
-                <router-link to="/register" v-if="idUtilisateur === null">S'inscrire</router-link> &nbsp;
-                <router-link to="/profil" v-if="idUtilisateur != null">Profil</router-link> &nbsp;
-                <router-link to="/messages" v-if="idUtilisateur != null">Messages</router-link>
-            </div>
-        </header>-->
 
         <router-view/>
 

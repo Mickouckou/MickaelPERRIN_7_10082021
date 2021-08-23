@@ -13,8 +13,8 @@
             <form>
                 <fieldset>
                     <legend>Se connecter</legend>
-                    <label for="emaillog">Email :</label><input type="email" name="emaillog" id="emaillog" required/><p id="emailPasConforme"></p><br>
-                    <label for="passwordlog">Mot de passe :</label><input type="password" name="passwordlog" id="passwordlog" required/><p id="passwordPasConforme"></p><br>
+                    <label for="email">Email :</label><input type="email" name="email" v-model="email" required/><p id="emailPasConforme"></p><br>
+                    <label for="password">Mot de passe :</label><input type="password" name="password" v-model="password" required/><p id="passwordPasConforme"></p><br>
                     <p><i>Tous les champs sont obligatoires pour se connecter</i></p>
                     <input type="submit" @click.prevent="userLogin" value="Se connecter">
                 </fieldset>
@@ -26,11 +26,17 @@
 <script>
 const axios = require('axios');
 export default {
+    data(){
+        return {
+            email: "",
+            password: ""
+        }
+    },
     methods: {
         userLogin(){
             let donneeValide = true;
-            const email = document.getElementById('emaillog').value;
-            const password = document.getElementById('passwordlog').value;
+            const email = this.email;
+            const password = this.password;
             if (validation("emailPasConforme", /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, email, "Veuillez renseigner votre email et respecter le format requis") === false) {
                 donneeValide = false;
             }

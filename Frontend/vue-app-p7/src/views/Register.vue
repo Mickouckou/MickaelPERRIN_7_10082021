@@ -13,9 +13,9 @@
             <form>
                 <fieldset>
                     <legend>S'inscrire</legend>
-                    <label for="emailreg">Email :</label><input type="text" name="emailreg" id="emailreg" required /><p id="emailPasConforme"></p><br>
-                    <label for="username">Nom d'utilisateur :</label><input type="text" name="username" id="username" required /><p id="usernamePasConforme"></p><br>
-                    <label for="passwordreg">Mot de passe :</label><input type="password" name="passwordreg" id="passwordreg" required /><p id="passwordPasConforme"></p><br>
+                    <label for="email">Email :</label><input type="email" name="email" v-model="email" required /><p id="emailPasConforme"></p><br>
+                    <label for="username">Nom d'utilisateur :</label><input type="text" name="username" v-model="username" required /><p id="usernamePasConforme"></p><br>
+                    <label for="password">Mot de passe :</label><input type="password" name="password" v-model="password" required/><p id="passwordPasConforme"></p><br>
                     <p><i>Tous les champs sont obligatoires pour s'inscrire</i></p>
                     <input type="submit" @click.prevent="registerUser" value="S'inscrire">
                 </fieldset>
@@ -27,12 +27,19 @@
 <script>
 const axios = require('axios');
 export default {
+    data(){
+        return{
+            email:"",
+            password: "",
+            username: ""
+        }
+    },
     methods: {
         registerUser(){
             let donneeValide = true;         
-            const email = document.getElementById('emailreg').value;
-            const password = document.getElementById('passwordreg').value;
-            const username = document.getElementById('username').value;   
+            const email = this.email;
+            const password = this.password;
+            const username = this.username;  
             if (validation("emailPasConforme", /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, email, "Veuillez renseigner votre email et respecter le format requis") === false) {
                 donneeValide = false;
             }
