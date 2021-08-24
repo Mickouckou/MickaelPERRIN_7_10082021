@@ -60,49 +60,48 @@ export default {
                         'Authorization': 'Bearer ' + userToken
                     }
                 })
-                .then(function (response) {
-                    const emailbdd = response.data.email;
-                    const usernamebdd = response.data.username;
-                    const avatarbdd = response.data.avatar;
-                    if (document.getElementById('email').value != "")
-                        emailup = document.getElementById('email').value;
-                    else
-                        emailup = emailbdd;
-                    if (document.getElementById('username').value != "")
-                        usernameup = document.getElementById('username').value;
-                    else
-                        usernameup = usernamebdd;
-                    /*if (document.getElementById('avatar').value != null)
-                        avatarup = this.avatar;
-                    else*/
-                        avatarup = avatarbdd;
-                    if (userToken === null){
-                        return status(400).json({ 'error': 'Mauvais token' });
-                    } else {
-                        axios('http://localhost:8080/api/users/', {
-                            method: 'put',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': 'Bearer ' + userToken
-                            },
-                            data: {
-                                email:emailup,
-                                username:usernameup,
-                                avatar:avatarup
-                            },
-                            
-                        })
-                        .then(
-                            (response) => ((this.user = response.data), console.log(response))
-                        )
-                        .catch((error) => console.log(error)
-                        );
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    alert(error);
-                }); 
+            .then(function (response) {
+                const emailbdd = response.data.email;
+                const usernamebdd = response.data.username;
+                const avatarbdd = response.data.avatar;
+                if (document.getElementById('email').value != "")
+                    emailup = document.getElementById('email').value;
+                else
+                    emailup = emailbdd;
+                if (document.getElementById('username').value != "")
+                    usernameup = document.getElementById('username').value;
+                else
+                    usernameup = usernamebdd;
+                /*if (document.getElementById('avatar').value != null)
+                    avatarup = this.avatar;
+                else*/
+                    avatarup = avatarbdd;
+                if (userToken === null){
+                    return status(400).json({ 'error': 'Mauvais token' });
+                } else {
+                    axios('http://localhost:8080/api/users/', {
+                        method: 'put',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + userToken
+                        },
+                        data: {
+                            email:emailup,
+                            username:usernameup,
+                            avatar:avatarup
+                        },
+                    })
+                    .then(
+                        (response) => ((this.user = response.data), console.log(response))
+                    )
+                    .catch((error) => console.log(error)
+                    );
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+                alert(error);
+            }); 
         },
         deleteUser(){
             axios.delete('http://localhost:8080/api/users/', {

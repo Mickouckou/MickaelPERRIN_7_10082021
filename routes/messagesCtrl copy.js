@@ -18,6 +18,19 @@ module.exports = {
         //  Paramètres
         var title = req.body.title;
         var content = req.body.content;
+        var image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+        
+        /*exports.createThing = (req, res, next) => {
+            const thingObject = JSON.parse(req.body.thing);
+            delete thingObject._id;
+            const thing = new Thing({
+              ...thingObject,
+              imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            });
+            thing.save()
+              .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
+              .catch(error => res.status(400).json({ error }));
+          };*/
 
         if (title == null || content == null) {
             return res.status(400).json({ 'error': 'paramètres manquants !' });
@@ -44,6 +57,7 @@ module.exports = {
                     models.Message.create({
                         title: title,
                         content: content,
+                        image: image,
                         likes: 0,
                         UserId: userFound.id
                     })
@@ -80,29 +94,6 @@ module.exports = {
                 model: models.User,
                 attributes: ['username']
             }]
-        })
-        .then (function (messages) {
-            if (messages) {
-                res.status(200).json(messages);
-            } else {
-                res.status(404).json({ "error": "aucun message trouvé" });
-            }
-        })
-        .catch (function(err) {
-            console.log(err);
-            res.status(500).json({ 'error': 'champs invalides' });
-        });
-    },
-    getOneMessage: function(req, res) {
-        //  Récupération de l'identifiant du message
-        var messageId = req.params.id;
-
-        models.Message.findOne({
-            include: [{
-                model: models.User,
-                attributes: ['username']
-            }],
-            where: { id: messageId}
         })
         .then (function (messages) {
             if (messages) {
@@ -165,7 +156,7 @@ module.exports = {
             where: { id: messageId }
           })
         .then(function() { 
-            return res.status(201).json({ 'message': 'Message supprimé'});
+            return res.status(500).json({ 'message': 'Message supprimé'});
         }) .catch (function(err) {
             return res.status(500).json({ 'error': 'On ne peut pas supprimer le message' });
         });

@@ -1,6 +1,7 @@
 //  Importations
 const express = require('express');
 const apiRouter = require('./apiRouteur').router;
+//const path = require('path');
 
 //  Instanciation du serveur
 const app = express();
@@ -18,13 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
-//  Route post ancienne méthode
-app.post('/api/stuff', (req, res, next) => {
-    console.log(req.body);
-    res.status(201).json({
-        message: 'Objet créé !'
-    });
-});
+//app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/api/', apiRouter);
 

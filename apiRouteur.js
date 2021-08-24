@@ -1,6 +1,7 @@
 //  Importations
 const express = require('express');
 const auth = require('./middleware/auth');
+const multer = require('./middleware/multer-config');
 const usersCtrl = require('./routes/usersCtrl');
 const messagesCtrl = require('./routes/messagesCtrl');
 const commentsCtrl = require('./routes/commentsCtrl');
@@ -21,11 +22,11 @@ exports.router = (function() {
     apiRouter.route('/users/').delete(auth, usersCtrl.deleteUserProfile);
 
     //  Routes messages
-    apiRouter.route('/messages/new/').post(messagesCtrl.createMessage);
+    apiRouter.route('/messages/new/').post(auth, messagesCtrl.createMessage);
     apiRouter.route('/messages/').get(messagesCtrl.listMessages);
-    //apiRouter.route('/messages/:id').get(messagesCtrl.getOneMessage);
-    apiRouter.route('/messages/:id').put(messagesCtrl.modifyMessage);
-    apiRouter.route('/messages/:id').delete(messagesCtrl.deleteMessage);
+    apiRouter.route('/messages/:id').get(auth, messagesCtrl.getOneMessage);
+    apiRouter.route('/messages/:id').put(auth, messagesCtrl.modifyMessage);
+    apiRouter.route('/messages/:id').delete(auth, messagesCtrl.deleteMessage);
 
     //  Routes commentaires
     apiRouter.route('/messages/:id/newComment/').post(commentsCtrl.createComment);
