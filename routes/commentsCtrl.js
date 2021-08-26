@@ -17,7 +17,7 @@ module.exports = {
 
         //  Paramètres
         var comment = req.body.comment;
-        var imgComment = req.body.imgComment;
+        //var imgComment = req.body.imgComment;
 
         if (comment == null) {
             return res.status(400).json({ 'error': 'veuillez saisir un commentaire !' });
@@ -43,7 +43,7 @@ module.exports = {
                 if(userFound) {
                     models.Comment.create({
                         comment: comment,
-                        imgComment: imgComment,
+                        //imgComment: imgComment,
                         UserId: userFound.id,
                         MessageId: req.params.id
                     })
@@ -76,11 +76,11 @@ module.exports = {
             attributes: (fields !== '*' && fields!= null) ? fields.split(',') : null,
             limit: (!isNaN(limit)) ? limit : null,
             offset: (!isNaN(offset)) ? offset : null,
-            /*include: [{
+            include: [{
                 model: models.User,
                 attributes: ['username']
-            }],*/
-            where: { messageId : req.params.id }
+            }],
+            //where: { messageId : req.params.id }
         })
         .then (function (comments) {
             if (comments) {
@@ -143,7 +143,7 @@ module.exports = {
             where: { id: commentId }
           })
         .then(function() { 
-            return res.status(500).json({ 'message': 'Commentaire supprimé'});
+            return res.status(201).json({ 'message': 'Commentaire supprimé'});
         }) .catch (function(err) {
             return res.status(500).json({ 'error': 'On ne peut pas supprimer le commentaire' });
         });

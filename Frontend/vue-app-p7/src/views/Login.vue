@@ -51,8 +51,10 @@ export default {
                 .then(function (response) {
                     const userId = response.data.userId;
                     const userToken = response.data.token;
+                    const isAdmin = response.data.isAdmin;
                     localStorage.setItem('userToken', JSON.stringify(userToken));
                     localStorage.setItem('userId', JSON.stringify(userId));
+                    localStorage.setItem('isAdmin', JSON.stringify(isAdmin));
                     document.location.replace('http://localhost:8081/#/messages');
                 })
                 .catch(function (error) {

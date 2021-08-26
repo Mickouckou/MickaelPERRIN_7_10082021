@@ -1,7 +1,7 @@
 //  Importations
 const express = require('express');
 const auth = require('./middleware/auth');
-const multer = require('./middleware/multer-config');
+//const multer = require('./middleware/multer-config');
 const usersCtrl = require('./routes/usersCtrl');
 const messagesCtrl = require('./routes/messagesCtrl');
 const commentsCtrl = require('./routes/commentsCtrl');
@@ -30,7 +30,7 @@ exports.router = (function() {
 
     //  Routes commentaires
     apiRouter.route('/messages/:id/newComment/').post(commentsCtrl.createComment);
-    apiRouter.route('/messages/:id/comments/').get(commentsCtrl.getComments);
+    apiRouter.route('/comments/').get(commentsCtrl.getComments);
     apiRouter.route('/messages/:id/comments/:commentId').put(commentsCtrl.modifyComment);
     apiRouter.route('/messages/:id/comments/:commentId').delete(commentsCtrl.deleteComment);
 

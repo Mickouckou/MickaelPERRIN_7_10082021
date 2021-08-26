@@ -11,7 +11,7 @@
                             <p><i>La valeur ne sera pas mise à jour si vous ne touchez pas au champ</i></p>
                         </td>
                         <td>
-                            <img :src="user.avatar" alt="user.username"><br>
+                            <!--<img :src="user.avatar" alt="user.username"><br>-->
                             <button class="button" @click.prevent="updateUser">Mettre à jour</button><br>
                             <button class="button" @click.prevent="deleteUser">Supprimer le compte</button>
                         </td>

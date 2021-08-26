@@ -18,6 +18,7 @@ export default {
 			firmName: "Groupomania",
 			infoFirm: "tous droits réservés",
             idUtilisateur: JSON.parse(localStorage.getItem('userId')),
+            isAdmin: JSON.parse(localStorage.getItem('isAdmin'))
 		}
 	},
 	computed: {

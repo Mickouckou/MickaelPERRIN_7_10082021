@@ -17,7 +17,7 @@ const axios = require('axios');
 const userToken = JSON.parse(localStorage.getItem('userToken')) || null;
 
 export default {
-    name: 'AfficheMessages',
+    name: 'PosterMessage',
     data(){
         return{
             title:"",

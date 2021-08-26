@@ -1,7 +1,9 @@
 //  Importations
 var jwt = require('jsonwebtoken');
 
-const JWT_SIGN_SECRET = 'fjsbh3s15f5s4dksdhfjnfksflsl,fnfkers#';
+require('dotenv').config();
+
+const JWT_SIGN_SECRET = process.env.JWT_SIGN_SECRET;
 
 //  Fonctions exportées
 module.exports = {
@@ -24,8 +26,9 @@ module.exports = {
         if (token != null) {
             try {
                 var jwtToken = jwt.verify(token, JWT_SIGN_SECRET);
-                if (jwtToken != null)
+                if (jwtToken != null){
                     userId = jwtToken.userId;
+                }
             } catch(err) { }
         }
         return userId;
