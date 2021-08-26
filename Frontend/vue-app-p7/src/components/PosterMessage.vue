@@ -3,8 +3,8 @@
         <form>
             <fieldset>
                 <legend>Poster un nouveau message</legend>
-                <label for="title">Titre :</label><input type="text" name="title" v-model="title" required /><br>
-                <label for="content">Contenu du message :</label><textarea name="content" v-model="content" rows="10" cols="50" required /><br>
+                <label for="createTitle">Titre :</label><input type="text" name="createTitle" v-model="createTitle" required /><br>
+                <label for="createContent">Contenu du message :</label><textarea name="createContent" v-model="createContent" rows="10" cols="50" required /><br>
                 <p><i>Tous les champs sont obligatoires pour poster</i></p>
                 <input type="submit" @click.prevent="createMsg" value="Poster">
             </fieldset>
@@ -20,15 +20,15 @@ export default {
     name: 'PosterMessage',
     data(){
         return{
-            title:"",
-            content:""
+            createTitle:"",
+            createContent:""
         }
     },
     methods: {
         createMsg(){
             let donneeValide = true;         
-            const title = this.title;
-            const content = this.content; 
+            const title = this.createTitle;
+            const content = this.createContent; 
             if (title.length <= 2 || content.length <= 4) {
                 donneeValide = false;
             }   

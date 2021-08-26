@@ -4,7 +4,7 @@
             <fieldset>
                 <legend>Poster un nouveau message</legend>
                 <label for="title">Titre :</label><input type="text" name="title" v-model="title" required /><br>
-                <label for="picture">Insérez une image :</label><input type="file" name="picture" id="picture" accept="image/png, image/gif, image/jpg, image/jpeg" /><br>
+                <label for="picture">Insérez une image :</label><input type="file" name="picture" id="picture" accept="image/*" /><br>
                 <label for="content">Contenu du message :</label><textarea name="content" v-model="content" rows="10" cols="50" required /><br>
                 <p><i>Tous les champs sont obligatoires pour poster</i></p>
                 <input type="submit" @click.prevent="createMsg" value="Poster">
@@ -31,7 +31,7 @@ export default {
             let img = document.getElementById('picture').files[0];
             // Création d'un formData obligatoire pour envoi de l'image
             var formData = new FormData();
-            formData.append('img', img);
+            formData.append("img", img);
             formData.append("title", this.title);
             formData.append("content", this.content);
             alert(img + " " + this.title + " " + this.content);

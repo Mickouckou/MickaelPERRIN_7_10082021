@@ -19,7 +19,7 @@
                     <label for="modifytitle">Titre du message :</label><input type="text" name="modifytitle" v-model="message.title" id="modifytitle" /><br>
                     <label for="modifycontent">Contenu du message :</label><textarea name="modifycontent" id="modifycontent" v-model="message.content" rows="10" cols="50" /><br>
                     <p><i>La valeur ne sera pas mise à jour si vous ne touchez pas au champ</i></p>
-                    <button class="button" @click.prevent="updateMsg(message.id)">Mettre à jour</button>
+                    <button class="button" @click.prevent="updateMsg(message.id, message.title, message.content)">Mettre à jour</button>
                 </form>
             </div>
             <div v-if="message.UserId === userIdentifie">
@@ -80,55 +80,24 @@ export default {
             .catch((error) => console.log(error));
     },
     methods:{
-        updateMsg(id) {
-            var titleup, contentup;
-            axios.get('http://localhost:8080/api/messages/'+id, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + userToken
-                    }
-                })
-            .then(function (response) {
-                const titlebdd = response.data.title;
-                const contentbdd = response.data.content;
-                //const imagebdd = response.data.image;
-                if (document.getElementById('modifytitle').value != "")
-                    titleup = document.getElementById('modifytitle').value;
-                else
-                    titleup = titlebdd;
-                if (document.getElementById('modifycontent').value != "")
-                    contentup = document.getElementById('modifycontent').value;
-                else
-                    contentup = contentbdd;
-                /*if (document.getElementById('avatar').value != null)
-                    avatarup = this.avatar;
-                else
-                    avatarup = avatarbdd;*/
-                if (userToken === null){
-                    return status(400).json({ 'error': 'Mauvais token' });
-                } else {
-                    axios('http://localhost:8080/api/messages/'+id, {
-                        method: 'put',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Bearer ' + userToken
-                        },
-                        data: {
-                            title:titleup,
-                            content:contentup
-                        },
-                    })
-                    .then(function() {
-                        document.location.reload('http://localhost:8081/#/messages/');
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-                }
+        updateMsg(id, title, content) {
+            axios('http://localhost:8080/api/messages/'+id, {
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + userToken
+                },
+                data: {
+                    title:title,
+                    content:content
+                },
+            })
+            .then(function(response) {
+                console.log(response);
+                document.location.reload('http://localhost:8081/#/messages/');
             })
             .catch(function (error) {
                 console.log(error);
-                alert(error);
             });
         },
         deleteMsg(id) {

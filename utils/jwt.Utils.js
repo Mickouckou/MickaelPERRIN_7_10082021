@@ -22,7 +22,7 @@ module.exports = {
     },
     getUserId: function(authorization) {
         var userId = -1;
-        var token = module.exports.parseAuthorization(authorization);
+        const token = module.exports.parseAuthorization(authorization);
         if (token != null) {
             try {
                 var jwtToken = jwt.verify(token, JWT_SIGN_SECRET);
