@@ -7,9 +7,9 @@
             
             <!-- Si lutilisateur connecté n'est pas l'auteur du message -> affichage basique -->
             <div class="contentcard"  v-if="message.UserId != userIdentifie">
-                <!--<div v-if="message.image !== '' && message.image !== null && (message.image.split('.')[2] === 'png' || 'jpg')">
-                    <img :src="message.image" alt="image">
-                </div>-->
+                <div v-if="message.image !== '' && message.image !== null && (message.image.split('.')[2] === 'png' || 'jpg')">
+                    <img :src="message.image" alt="image" width="600">
+                </div>
                 <div>{{ message.content }}</div>
             </div>
             

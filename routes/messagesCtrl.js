@@ -2,6 +2,7 @@
 var models = require('../models');
 var asyncLib = require('async');
 var jwtUtils = require('../utils/jwt.Utils');
+const fs = require("fs");
 
 //  Constantes
 const TITLE_LIMIT = 2;
@@ -14,11 +15,13 @@ module.exports = {
         //  Récupération de l'entête d'identification
         var headerAuth = req.headers['authorization'];
         var userId = jwtUtils.getUserId(headerAuth);
-
+        
         //  Paramètres
-        var title = req.body.title;
-        var content = req.body.content;
+        let title = req.body.title;
+        let content = req.body.content;
+        let image = req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : ""
 
+        console.log(title + " " + content + " image : " + image);
         if (title == null || content == null) {
             return res.status(400).json({ 'error': 'paramètres manquants !' });
         }
@@ -44,6 +47,7 @@ module.exports = {
                     models.Message.create({
                         title: title,
                         content: content,
+                        image: image,
                         likes: 0,
                         UserId: userFound.id
                     })
@@ -61,7 +65,7 @@ module.exports = {
             if (newMessage) {
                 return res.status(201).json(newMessage);
             } else {
-                return res.status(500).json({ 'error': 'impossible de d\'enregister le message' });
+                return res.status(500).json({ 'error': 'impossible d\'enregister le message' });
             }
         });
     },
