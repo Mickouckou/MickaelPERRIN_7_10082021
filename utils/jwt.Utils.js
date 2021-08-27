@@ -1,5 +1,5 @@
 //  Importations
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 
@@ -21,11 +21,11 @@ module.exports = {
         return (authorization != null) ? authorization.replace('Bearer ', '') : null;
     },
     getUserId: function(authorization) {
-        var userId = -1;
+        let userId = -1;
         const token = module.exports.parseAuthorization(authorization);
         if (token != null) {
             try {
-                var jwtToken = jwt.verify(token, JWT_SIGN_SECRET);
+                const jwtToken = jwt.verify(token, JWT_SIGN_SECRET);
                 if (jwtToken != null){
                     userId = jwtToken.userId;
                 }

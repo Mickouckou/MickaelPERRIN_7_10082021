@@ -53,7 +53,7 @@ export default {
     },
     methods: {
         updateUser(){
-            var emailup, usernameup, avatarup;
+            let emailup, usernameup, avatarup;
             axios.get('http://localhost:8080/api/users/', {
                     headers: {
                         'Content-Type': 'application/json',

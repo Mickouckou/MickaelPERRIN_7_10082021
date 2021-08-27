@@ -16,7 +16,6 @@
 <script>
 const axios = require('axios');
 const userToken = JSON.parse(localStorage.getItem('userToken')) || null;
-//var fs = require('fs');
 
 export default {
     name: 'PosterMessage',
@@ -32,12 +31,16 @@ export default {
             // Récupération de l'image
             let img = document.getElementById('image').files[0];
 
-            console.log(this.title + " " + this.content);
             // Création d'un formData obligatoire pour envoi de l'image
-            var data = new FormData();
-            data.append("image", img);
-            data.append("title", this.title);
-            data.append("content", this.content);
+            const data = new FormData();
+            if (img != null || ""){
+                data.append("image", img);
+                data.append("title", this.title);
+                data.append("content", this.content);
+            } else {
+                data.append("title", this.title);
+                data.append("content", this.content);
+            }
             
             axios('http://localhost:8080/api/images/', {
                 method: 'post',

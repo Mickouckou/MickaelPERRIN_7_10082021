@@ -9,7 +9,7 @@ const commentsCtrl = require('./routes/commentsCtrl');
 
 //  Router
 exports.router = (function() {
-    var apiRouter = express.Router();
+    const apiRouter = express.Router();
 
     //  Routes faites 13/13 (14)
     //  Routes terminées ?/14
@@ -25,7 +25,7 @@ exports.router = (function() {
     apiRouter.route('/images/').post(auth, multer, messagesCtrl.createMessage);
     apiRouter.route('/messages/').get(messagesCtrl.listMessages);
     apiRouter.route('/messages/:id').get(auth, messagesCtrl.getOneMessage);
-    apiRouter.route('/messages/:id').put(auth, messagesCtrl.modifyMessage);
+    apiRouter.route('/images/:id').put(auth, multer, messagesCtrl.modifyMessage);
     apiRouter.route('/messages/:id').delete(auth, messagesCtrl.deleteMessage);
 
     //  Routes commentaires

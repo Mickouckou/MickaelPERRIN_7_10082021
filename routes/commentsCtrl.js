@@ -1,7 +1,7 @@
 //  Importations
-var models = require('../models');
-var asyncLib = require('async');
-var jwtUtils = require('../utils/jwt.Utils');
+const models = require('../models');
+const asyncLib = require('async');
+const jwtUtils = require('../utils/jwt.Utils');
 
 //  Constantes
 /*const TITLE_LIMIT = 2;
@@ -12,12 +12,12 @@ const CONTENT_LIMIT = 4;*/
 module.exports = {
     createComment: function(req, res) {
         //  Récupération de l'entête d'identification
-        var headerAuth = req.headers['authorization'];
-        var userId = jwtUtils.getUserId(headerAuth);
+        const headerAuth = req.headers['authorization'];
+        const userId = jwtUtils.getUserId(headerAuth);
 
         //  Paramètres
-        var comment = req.body.comment;
-        //var imgComment = req.body.imgComment;
+        const comment = req.body.comment;
+        //const imgComment = req.body.imgComment;
 
         if (comment == null) {
             return res.status(400).json({ 'error': 'veuillez saisir un commentaire !' });
@@ -66,10 +66,10 @@ module.exports = {
         });
     },
     getComments: function(req, res) {
-        var fields = req.query.fields;
-        var limit = parseInt(req.query.limit);
-        var offset = parseInt(req.query.offset);
-        var order = req.query.order;
+        const fields = req.query.fields;
+        const limit = parseInt(req.query.limit);
+        const offset = parseInt(req.query.offset);
+        const order = req.query.order;
 
         models.Comment.findAll({
             order: [(order != null) ? order.split(':') : ['id', 'ASC']],
@@ -96,11 +96,11 @@ module.exports = {
     },
     modifyComment: function(req, res) {
         //  Récupération de l'identifiant du message
-        var messageId = req.params.id;
-        var commentId = req.params.commentId;
+        const messageId = req.params.id;
+        const commentId = req.params.commentId;
 
         //  Paramètres
-        var comment = req.body.comment;
+        const comment = req.body.comment;
 
         asyncLib.waterfall([
             function(done) {
@@ -137,7 +137,7 @@ module.exports = {
     },
     deleteComment: function(req, res) {
         //  Récupération de l'identifiant du commentaire
-        var commentId = req.params.commentId;
+        const commentId = req.params.commentId;
 
         models.Comment.destroy({
             where: { id: commentId }

@@ -5,18 +5,20 @@
                 <h2>{{ message.title }}</h2><p>par {{ message.User.username }}</p>
             </div>
             
-            <!-- Si lutilisateur connecté n'est pas l'auteur du message -> affichage basique -->
+            <!-- Si l'utilisateur connecté n'est pas l'auteur du message -> affichage basique -->
             <div class="contentcard"  v-if="message.UserId != userIdentifie">
                 <div v-if="message.image !== '' && message.image !== null && (message.image.split('.')[2] === 'png' || 'jpg')">
-                    <img :src="message.image" alt="image" width="600">
+                    <img :src="message.image" alt="image">
                 </div>
                 <div>{{ message.content }}</div>
             </div>
             
-            <!-- Si lutilisateur connecté est l'auteur du message -> modification possible -->
+            <!-- Si l'utilisateur connecté est l'auteur du message -> modification possible -->
             <div class="contentcard" v-if="message.UserId === userIdentifie || userIsAdmin === true">
-                <form>
+                <form enctype="multipart/form-data">
                     <label for="modifytitle">Titre du message :</label><input type="text" name="modifytitle" v-model="message.title" id="modifytitle" /><br>
+                    <img v-if="message.image !== '' && message.image !== null" :src="message.image" alt="image"><br>
+                    <!--<label for="image">Changer l'image :</label><input type="file" name="image" id="image" accept="image/*" /><br>-->
                     <label for="modifycontent">Contenu du message :</label><textarea name="modifycontent" id="modifycontent" v-model="message.content" rows="10" cols="50" /><br>
                     <p><i>La valeur ne sera pas mise à jour si vous ne touchez pas au champ</i></p>
                     <button class="button" @click.prevent="updateMsg(message.id, message.title, message.content)">Mettre à jour</button>
@@ -28,7 +30,19 @@
             
             <div class="commentcard">
                 <div v-for="comment in comments .filter((comment) => { return comment.MessageId === message.id;})" :key="comment.id" class="commentincard">
-                    <div>{{ comment.comment }}</div><p>par {{ comment.User.username }}</p>
+                    <!-- Si l'utilisateur connecté n'est pas l'auteur du commentaire -> affichage basique -->
+                    <div v-if="comment.UserId != userIdentifie">{{ comment.comment }}</div><p>par {{ comment.User.username }}</p>
+                    
+                    <!-- Si l'utilisateur connecté est l'auteur du commentaire -> modification possible -->
+                    <div v-if="comment.UserId === userIdentifie || userIsAdmin === true">
+                        <form>
+                            <label for="comment">Commentaire :</label><input type="text" name="comment" v-model="comment.comment" />
+                            <button class="button" @click.prevent="updateComment(message.id, comment.id, comment.comment)">Modifier</button>
+                        </form>
+                    </div>
+
+
+
                     <div v-if="comment.UserId === userIdentifie">
                         ---------------<button class="button" @click="deleteComment(message.id, comment.id)">Supprimer le commentaire</button>---------------
                     </div>
@@ -56,11 +70,11 @@ export default {
         return{
             messages:[],
             comments:[],
+            image: null,
             userIdentifie: JSON.parse(localStorage.getItem('userId')) || null,
             userIsAdmin: JSON.parse(localStorage.getItem('isAdmin')) || null
         };
     },
-
     async created(){
         this.messages = [];
         this.comments = [];
@@ -81,19 +95,31 @@ export default {
     },
     methods:{
         updateMsg(id, title, content) {
-            axios('http://localhost:8080/api/messages/'+id, {
+            // Récupération de l'image
+            let img = document.getElementById('image').files[0];
+            //alert (img);
+
+            // Création d'un formData obligatoire pour envoi de l'image
+            const data = new FormData();
+            if (this.image != null || ""){
+                data.append("image", img);
+                data.append("title", title);
+                data.append("content", content);
+            } else {
+                data.append("title", title);
+                data.append("content", content);
+            }
+            
+            axios('http://localhost:8080/api/images/'+id, {
                 method: 'put',
                 headers: {
-                    'Content-Type': 'application/json',
+                    //'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + userToken
                 },
-                data: {
-                    title:title,
-                    content:content
-                },
+                data: data
             })
-            .then(function(response) {
-                console.log(response);
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
                 document.location.reload('http://localhost:8081/#/messages/');
             })
             .catch(function (error) {
@@ -118,10 +144,10 @@ export default {
             const comment = this.newcomment;      
             axios('http://localhost:8080/api/messages/' + messageId + '/newComment/', {
                 method: 'post',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + userToken
-                    },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + userToken
+                },
                 data: {
                     comment: comment,
                     MessageId: messageId
@@ -134,6 +160,24 @@ export default {
             .catch(function (error) {
                 console.log(error);
             });         
+        },
+        updateComment(messageId, commentId, comment){
+            axios('http://localhost:8080/api/messages/' + messageId + '/comments/' + commentId, {
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + userToken
+                },
+                data:{
+                    comment: comment
+                }
+            })
+            .then(function () {
+                document.location.reload('http://localhost:8081/#/messages/');
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         },
         deleteComment(messageId, commentId) {
             axios.delete('http://localhost:8080/api/messages/' + messageId + '/comments/' + commentId, {
@@ -166,6 +210,9 @@ export default {
 }
 .titrecard p{
     font-style: italic;
+}
+.contentcard img{
+    max-width: 50%;
 }
 .commentcard{
     border: 1px solid lightgreen;

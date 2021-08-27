@@ -1,8 +1,8 @@
 //  Importations
-var bcrypt = require('bcrypt');
-var jwtUtils = require('../utils/jwt.Utils');
-var models = require('../models');
-var asyncLib = require('async');
+const bcrypt = require('bcrypt');
+const jwtUtils = require('../utils/jwt.Utils');
+const models = require('../models');
+const asyncLib = require('async');
 
 //  Constantes
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -13,10 +13,10 @@ module.exports = {
     register: function(req, res, next) {
         
         //  Paramètres
-        var email    = req.body.email;
-        var username = req.body.username;
-        var password = req.body.password;
-        var avatar = req.body.avatar;
+        const email    = req.body.email;
+        const username = req.body.username;
+        const password = req.body.password;
+        const avatar = req.body.avatar;
         
         if (email === null || username === null || password === null) {
             return res.status(400).json({ 'error': 'paramètres manquants !' });
@@ -55,7 +55,7 @@ module.exports = {
                 }
             },
             function (userFound, bcryptedPassword, done) {
-                var newUser = models.User.create({
+                const newUser = models.User.create({
                     email: email,
                     username: username,
                     password: bcryptedPassword,
@@ -137,8 +137,8 @@ module.exports = {
     getUserProfile: function(req, res, next) {
         //  Récupération de l'entête d'identification
         //const userId = req.params.id;
-        var headerAuth = req.headers['authorization'];
-        var userId = jwtUtils.getUserId(headerAuth);
+        const headerAuth = req.headers['authorization'];
+        const userId = jwtUtils.getUserId(headerAuth);
 
         if (userId < 0)
             return res.status(400).json({ 'error': 'Mauvais token' });
@@ -158,13 +158,13 @@ module.exports = {
     },
     updateUserProfile: function(req, res, next) {
         //  Récupération de l'entête d'identification
-        var headerAuth = req.headers['authorization'];
-        var userId = jwtUtils.getUserId(headerAuth);
+        const headerAuth = req.headers['authorization'];
+        const userId = jwtUtils.getUserId(headerAuth);
 
         //  Paramètres
-        var avatar = req.body.avatar;
-        var email = req.body.email;
-        var username = req.body.username;
+        const avatar = req.body.avatar;
+        const email = req.body.email;
+        const username = req.body.username;
 
         asyncLib.waterfall([
             function(done) {
@@ -202,8 +202,8 @@ module.exports = {
     },
     deleteUserProfile (req, res, next) {
         //  Récupération de l'entête d'identification
-        var headerAuth = req.headers['authorization'];
-        var userId = jwtUtils.getUserId(headerAuth);
+        const headerAuth = req.headers['authorization'];
+        const userId = jwtUtils.getUserId(headerAuth);
 
         models.User.destroy({
             where: { id: userId }

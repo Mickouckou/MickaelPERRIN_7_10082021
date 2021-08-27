@@ -1,7 +1,7 @@
 //  Importations
-var models = require('../models');
-var asyncLib = require('async');
-var jwtUtils = require('../utils/jwt.Utils');
+const models = require('../models');
+const asyncLib = require('async');
+const jwtUtils = require('../utils/jwt.Utils');
 const fs = require("fs");
 
 //  Constantes
@@ -13,15 +13,14 @@ const CONTENT_LIMIT = 4;
 module.exports = {
     createMessage: function(req, res) {
         //  Récupération de l'entête d'identification
-        var headerAuth = req.headers['authorization'];
-        var userId = jwtUtils.getUserId(headerAuth);
+        const headerAuth = req.headers['authorization'];
+        const userId = jwtUtils.getUserId(headerAuth);
         
         //  Paramètres
         let title = req.body.title;
         let content = req.body.content;
         let image = req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : ""
 
-        console.log(title + " " + content + " image : " + image);
         if (title == null || content == null) {
             return res.status(400).json({ 'error': 'paramètres manquants !' });
         }
@@ -70,10 +69,10 @@ module.exports = {
         });
     },
     listMessages: function(req, res) {
-        var fields = req.query.fields;
-        var limit = parseInt(req.query.limit);
-        var offset = parseInt(req.query.offset);
-        var order = req.query.order;
+        const fields = req.query.fields;
+        const limit = parseInt(req.query.limit);
+        const offset = parseInt(req.query.offset);
+        const order = req.query.order;
 
         models.Message.findAll({
             order: [(order != null) ? order.split(':') : ['updatedAt', 'DESC']],
@@ -99,7 +98,7 @@ module.exports = {
     },
     getOneMessage: function(req, res) {
         //  Récupération de l'identifiant du message
-        var messageId = req.params.id;
+        const messageId = req.params.id;
 
         models.Message.findOne({
             include: [{
@@ -122,11 +121,12 @@ module.exports = {
     },
     modifyMessage: function(req, res) {
         //  Récupération de l'identifiant du message
-        var messageId = req.params.id;
+        const messageId = req.params.id;
 
         //  Paramètres
-        var title = req.body.title;
-        var content = req.body.content;
+        const title = req.body.title;
+        const content = req.body.content;
+        let image = req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : ""
 
         asyncLib.waterfall([
             function(done) {
@@ -143,7 +143,8 @@ module.exports = {
                 if (messageFound) {
                     messageFound.update({
                         title: (title ? title : messageFound.title),
-                        content: (content ? content : messageFound.content)
+                        content: (content ? content : messageFound.content),
+                        image: (image ? image : messageFound.image)
                     }) .then (function() {
                         done(messageFound);
                     }) .catch (function(err) {
@@ -163,7 +164,7 @@ module.exports = {
     },
     deleteMessage: function(req, res) {
         //  Récupération de l'identifiant du message
-        var messageId = req.params.id;
+        const messageId = req.params.id;
 
         models.Message.destroy({
             where: { id: messageId }
