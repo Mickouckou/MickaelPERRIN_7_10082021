@@ -8,7 +8,7 @@
             <!-- Si l'utilisateur connecté n'est pas l'auteur du message -> affichage basique -->
             <div class="contentcard"  v-if="message.UserId != userIdentifie">
                 <div v-if="message.image !== '' && message.image !== null && (message.image.split('.')[2] === 'png' || 'jpg')">
-                    <img :src="message.image" alt="image">
+                    <img :src="message.image" alt="image"><br><br>
                 </div>
                 <div>{{ message.content }}</div>
             </div>
@@ -16,22 +16,22 @@
             <!-- Si l'utilisateur connecté est l'auteur du message -> modification possible -->
             <div class="contentcard" v-if="message.UserId === userIdentifie || userIsAdmin === true">
                 <form enctype="multipart/form-data">
-                    <label for="modifytitle">Titre du message :</label><input type="text" name="modifytitle" v-model="message.title" id="modifytitle" /><br>
-                    <img v-if="message.image !== '' && message.image !== null" :src="message.image" alt="image"><br>
-                    <!--<label for="image">Changer l'image :</label><input type="file" name="image" id="image" accept="image/*" /><br>-->
+                    <label for="modifytitle">Titre du message :</label><input type="text" name="modifytitle" v-model="message.title" id="modifytitle" /><br><br>
+                    <img v-if="message.image !== '' && message.image !== null" :src="message.image" alt="image"><br><br>
+                    <label for="image">Changer l'image :</label><input type="file" ref="image" @change="upload" /><br><br>
                     <label for="modifycontent">Contenu du message :</label><textarea name="modifycontent" id="modifycontent" v-model="message.content" rows="10" cols="50" /><br>
                     <p><i>La valeur ne sera pas mise à jour si vous ne touchez pas au champ</i></p>
                     <button class="button" @click.prevent="updateMsg(message.id, message.title, message.content)">Mettre à jour</button>
                 </form>
             </div>
-            <div v-if="message.UserId === userIdentifie">
-                ---------------<button class="button" @click="deleteMsg(message.id)">Supprimer le message</button>---------------
+            <div v-if="message.UserId === userIdentifie" class="suppression">
+                <button class="button" @click="deleteMsg(message.id)">Supprimer le message</button>
             </div>
             
             <div class="commentcard">
                 <div v-for="comment in comments .filter((comment) => { return comment.MessageId === message.id;})" :key="comment.id" class="commentincard">
                     <!-- Si l'utilisateur connecté n'est pas l'auteur du commentaire -> affichage basique -->
-                    <div v-if="comment.UserId != userIdentifie">{{ comment.comment }}</div><p>par {{ comment.User.username }}</p>
+                    <div v-if="comment.UserId != userIdentifie">{{ comment.comment }}</div><p v-if="comment.UserId != userIdentifie"><i>par {{ comment.User.username }}</i></p>
                     
                     <!-- Si l'utilisateur connecté est l'auteur du commentaire -> modification possible -->
                     <div v-if="comment.UserId === userIdentifie || userIsAdmin === true">
@@ -41,14 +41,12 @@
                         </form>
                     </div>
 
-
-
-                    <div v-if="comment.UserId === userIdentifie">
-                        ---------------<button class="button" @click="deleteComment(message.id, comment.id)">Supprimer le commentaire</button>---------------
+                    <div v-if="comment.UserId === userIdentifie" class="suppression">
+                        <button class="button" @click="deleteComment(message.id, comment.id)">Supprimer le commentaire</button>
                     </div>
                 </div>
                 <form>
-                    <label for="newcomment">Commentaire :</label><textarea name="newcomment" v-model="newcomment" rows="2" cols="50" /><br>
+                    <label for="newcomment">Commentaire :</label><textarea name="newcomment" v-model="newcomment" rows="2" cols="50" /><br><br>
                     <button class="button" @click.prevent="createComment(message.id)">Commenter</button>
                 </form>
             </div>
@@ -70,7 +68,7 @@ export default {
         return{
             messages:[],
             comments:[],
-            image: null,
+            image: [],
             userIdentifie: JSON.parse(localStorage.getItem('userId')) || null,
             userIsAdmin: JSON.parse(localStorage.getItem('isAdmin')) || null
         };
@@ -94,10 +92,13 @@ export default {
             .catch((error) => console.log(error));
     },
     methods:{
+        upload() {
+            this.image = this.$refs.image.files[0];
+            console.log(this.image);
+        },
         updateMsg(id, title, content) {
             // Récupération de l'image
-            let img = document.getElementById('image').files[0];
-            //alert (img);
+            let img = this.image;
 
             // Création d'un formData obligatoire pour envoi de l'image
             const data = new FormData();
@@ -198,30 +199,5 @@ export default {
 </script>
 
 <style lang="scss">
-.card{
-    border: 2px solid green;
-    border-radius: 20px;
-    margin: 5%;
-}
-.titrecard{
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-}
-.titrecard p{
-    font-style: italic;
-}
-.contentcard img{
-    max-width: 50%;
-}
-.commentcard{
-    border: 1px solid lightgreen;
-    border-radius: 15px;
-    margin: 3%;
-}
-.commentincard{
-    border: 1px solid lightseagreen;
-    border-radius: 10px;
-    margin: 1%;
-}
+
 </style>

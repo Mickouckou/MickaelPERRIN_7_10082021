@@ -1,14 +1,15 @@
 <template>
     <div class="createMsg">
         <form enctype="multipart/form-data">
-            <fieldset>
-                <legend>Poster un nouveau message</legend>
-                <label for="title">Titre :</label><input type="text" name="title" v-model="title" required /><br>
-                <label for="image">Insérez une image :</label><input type="file" name="image" id="image" accept="image/*" /><br>
+            <!--<fieldset>
+                <legend>Poster un nouveau message</legend>-->
+                <h2>Poster un nouveau message</h2>
+                <label for="title">Titre :</label><input type="text" name="title" v-model="title" required /><br><br>
+                <label for="image">Insérez une image :</label><input type="file" name="image" id="image" accept="image/*" /><br><br>
                 <label for="content">Contenu du message :</label><textarea name="content" v-model="content" rows="10" cols="50" required /><br>
                 <p><i>Tous les champs sont obligatoires pour poster</i></p>
-                <input type="submit" @click.prevent="createMsg" value="Poster">
-            </fieldset>
+                <input type="submit" class="button" @click.prevent="createMsg" value="Poster">
+            <!--</fieldset>-->
         </form>
     </div>
 </template>

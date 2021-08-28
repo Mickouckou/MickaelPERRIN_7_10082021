@@ -1,36 +1,33 @@
 <template>
     <div class="login">
-        <header>
-            <div id="nav">
-                <router-link to="/">Se connecter</router-link> &nbsp;
-                <router-link to="/register">S'inscrire</router-link>
-            </div>
-        </header>
+        <HeaderFirst />
 
         <h1>Se connecter</h1>
 
         <div class="formulaire">    
             <form>
-                <fieldset>
-                    <legend>Se connecter</legend>
-                    <label for="email">Email :</label><input type="email" name="email" v-model="email" required/><p id="emailPasConforme"></p><br>
-                    <label for="password">Mot de passe :</label><input type="password" name="password" v-model="password" required/><p id="passwordPasConforme"></p><br>
-                    <p><i>Tous les champs sont obligatoires pour se connecter</i></p>
-                    <input type="submit" @click.prevent="userLogin" value="Se connecter">
-                </fieldset>
+                <label for="email">Email :</label><input type="email" name="email" v-model="email" required/><br><p id="emailPasConforme"></p><br>
+                <label for="password">Mot de passe :</label><input type="password" name="password" v-model="password" required/><br><p id="passwordPasConforme"></p><br>
+                <p><i>Tous les champs sont obligatoires pour se connecter</i></p>
+                <input type="submit" class="button" @click.prevent="userLogin" value="Se connecter">
             </form>
         </div>
     </div>
 </template>
 
 <script>
+import HeaderFirst from '@/components/HeaderFirst.vue'
 const axios = require('axios');
+
 export default {
     data(){
         return {
             email: "",
             password: ""
         }
+    },
+    components:{
+        HeaderFirst
     },
     methods: {
         userLogin(){
@@ -79,14 +76,3 @@ function validation(idValeur, regex, contenuValeur, message){
     }
 }
 </script>
-
-<style lang="scss">
-form{
-    width:600px;
-    margin: auto;
-}
-fieldset{
-    margin:50px 0 50px 0;
-    
-}
-</style>

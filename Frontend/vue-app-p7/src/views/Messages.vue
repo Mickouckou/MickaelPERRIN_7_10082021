@@ -1,12 +1,6 @@
 <template>
     <div class="messages" id="messages">
-        <header>
-            <div id="nav">
-                <router-link to="/profil">Profil</router-link> &nbsp;
-                <router-link to="/messages">Messages</router-link>
-            </div>
-            <button class="button" id="logout" @click="logout">Se déconnecter</button>
-        </header>
+        <HeaderSecond />
 
         <PosterMessage />
 
@@ -15,6 +9,7 @@
 </template>
 
 <script>
+import HeaderSecond from '@/components/HeaderSecond.vue'
 import AfficheMessages from '@/components/AfficheMessages.vue';
 import PosterMessage from '@/components/PosterMessage.vue';
 //const axios = require('axios');
@@ -22,15 +17,16 @@ import PosterMessage from '@/components/PosterMessage.vue';
 export default {
     name: 'Messages',
     components: {
+        HeaderSecond,
         PosterMessage,
         AfficheMessages
-    },
+    }/*,
     methods: {
         logout(){
             localStorage.clear();
             document.location.replace('http://localhost:8081/');
         }
-    }
+    }*/
 }
 
 </script>

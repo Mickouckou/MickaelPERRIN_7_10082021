@@ -1,22 +1,16 @@
 <template>
-    <div>
+    <div class="profil">
         <h1>{{ user.username }}</h1>
-        <div>
+        <div class="formulaire">
             <form>
-                <table>
-                    <tr>
-                        <td>
-                            <label for="email">Email :</label><input type="email" name="email" v-model="user.email" id="email" /><p id="emailPasConforme"></p><br>
-                            <label for="username">Nom d'utilisateur :</label><input type="text" name="username" v-model="user.username" id="username" /><p id="usernamePasConforme"></p><br>
-                            <p><i>La valeur ne sera pas mise à jour si vous ne touchez pas au champ</i></p>
-                        </td>
-                        <td>
-                            <!--<img :src="user.avatar" alt="user.username"><br>-->
-                            <button class="button" @click.prevent="updateUser">Mettre à jour</button><br>
-                            <button class="button" @click.prevent="deleteUser">Supprimer le compte</button>
-                        </td>
-                    </tr>
-                </table>
+                <label for="email">Email :</label><input type="email" name="email" v-model="user.email" id="email" /><br><p></p><br>
+                <label for="username">Nom d'utilisateur :</label><input type="text" name="username" v-model="user.username" id="username" /><br>
+                <p><i>La valeur ne sera pas mise à jour si vous ne touchez pas au champ</i></p>
+                <button class="button" @click.prevent="updateUser">Mettre à jour</button><br>
+                <div class="suppression">
+                    <button class="button" @click.prevent="deleteUser">Supprimer le compte</button>
+                    <p><i>ATTENTION CETTE ACTION EST IRREVERSIBLE</i></p>
+                </div>
             </form>
         </div>
     </div>
@@ -123,3 +117,4 @@ export default {
     }
 }
 </script>
+

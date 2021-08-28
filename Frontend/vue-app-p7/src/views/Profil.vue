@@ -1,31 +1,20 @@
 <template>
     <div class="profil" id="profil">
-        <header>
-            <div id="nav">
-                <router-link to="/profil">Profil</router-link> &nbsp;
-                <router-link to="/messages">Messages</router-link>
-            </div>
-            <button class="button" id="logout" @click="logout">Se déconnecter</button>
-        </header>
+        <HeaderSecond />
         
-        <!-- Code généré par le JavaScript -->
         <AfficheProfil />
     </div>
 </template>
 
 <script>
+import HeaderSecond from '@/components/HeaderSecond.vue'
 import AfficheProfil from '@/components/AfficheProfil.vue'
 
 export default {
     name: 'Profil',
     components: {
+        HeaderSecond,
         AfficheProfil
-    },
-    methods: {
-        logout(){
-            localStorage.clear();
-            document.location.replace('http://localhost:8081/');
-        }
     }
 }
 
