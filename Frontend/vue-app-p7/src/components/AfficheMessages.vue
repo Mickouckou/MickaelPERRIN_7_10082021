@@ -6,7 +6,7 @@
             </div>
             
             <!-- Si l'utilisateur connecté n'est pas l'auteur du message -> affichage basique -->
-            <div class="contentcard"  v-if="message.UserId != userIdentifie">
+            <div class="contentcard"  v-if="message.UserId != userIdentifie  && userIsAdmin === false">
                 <div v-if="message.image !== '' && message.image !== null && (message.image.split('.')[2] === 'png' || 'jpg')">
                     <img :src="message.image" alt="image"><br><br>
                 </div>
@@ -31,12 +31,12 @@
             <div class="commentcard">
                 <div v-for="comment in comments .filter((comment) => { return comment.MessageId === message.id;})" :key="comment.id" class="commentincard">
                     <!-- Si l'utilisateur connecté n'est pas l'auteur du commentaire -> affichage basique -->
-                    <div v-if="comment.UserId != userIdentifie">{{ comment.comment }}</div><p v-if="comment.UserId != userIdentifie"><i>par {{ comment.User.username }}</i></p>
+                    <div v-if="comment.UserId != userIdentifie && userIsAdmin === false">{{ comment.comment }}</div><p v-if="comment.UserId != userIdentifie"><i>par {{ comment.User.username }}</i></p>
                     
                     <!-- Si l'utilisateur connecté est l'auteur du commentaire -> modification possible -->
                     <div v-if="comment.UserId === userIdentifie || userIsAdmin === true">
                         <form>
-                            <label for="comment">Commentaire :</label><input type="text" name="comment" v-model="comment.comment" />
+                            <label for="comment">Commentaire :</label><textarea name="comment" v-model="comment.comment" />
                             <button class="button" @click.prevent="updateComment(message.id, comment.id, comment.comment)">Modifier</button>
                         </form>
                     </div>
@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <form>
-                    <label for="newcomment">Commentaire :</label><textarea name="newcomment" v-model="newcomment" rows="2" cols="50" /><br><br>
+                    <label for="newcomment">Commentaire :</label><textarea name="newcomment" v-model="newcomment" /><br><br>
                     <button class="button" @click.prevent="createComment(message.id)">Commenter</button>
                 </form>
             </div>
