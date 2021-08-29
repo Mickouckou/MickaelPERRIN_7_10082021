@@ -4,9 +4,9 @@
             <div class="titrecard">
                 <h2>{{ message.title }}</h2><p>par {{ message.User.username }}</p>
             </div>
-            
+
             <!-- Si l'utilisateur connecté n'est pas l'auteur du message -> affichage basique -->
-            <div class="contentcard"  v-if="message.UserId != userIdentifie  && userIsAdmin === false">
+            <div class="contentcard"  v-if="message.UserId != userIdentifie  && userIsAdmin === null">
                 <div v-if="message.image !== '' && message.image !== null && (message.image.split('.')[2] === 'png' || 'jpg')">
                     <img :src="message.image" alt="image"><br><br>
                 </div>
