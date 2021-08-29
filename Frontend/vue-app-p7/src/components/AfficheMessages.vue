@@ -6,7 +6,7 @@
             </div>
 
             <!-- Si l'utilisateur connecté n'est pas l'auteur du message -> affichage basique -->
-            <div class="contentcard"  v-if="message.UserId != userIdentifie  && userIsAdmin === null">
+            <div class="contentcard"  v-if="message.UserId != userIdentifie  && userIsAdmin != true">
                 <div v-if="message.image !== '' && message.image !== null && (message.image.split('.')[2] === 'png' || 'jpg')">
                     <img :src="message.image" alt="image"><br><br>
                 </div>
@@ -31,7 +31,7 @@
             <div class="commentcard">
                 <div v-for="comment in comments .filter((comment) => { return comment.MessageId === message.id;})" :key="comment.id" class="commentincard">
                     <!-- Si l'utilisateur connecté n'est pas l'auteur du commentaire -> affichage basique -->
-                    <div v-if="comment.UserId != userIdentifie && userIsAdmin === false">{{ comment.comment }}</div><p v-if="comment.UserId != userIdentifie"><i>par {{ comment.User.username }}</i></p>
+                    <div v-if="comment.UserId != userIdentifie && userIsAdmin != true">{{ comment.comment }}</div><p v-if="comment.UserId != userIdentifie"><i>par {{ comment.User.username }}</i></p>
                     
                     <!-- Si l'utilisateur connecté est l'auteur du commentaire -> modification possible -->
                     <div v-if="comment.UserId === userIdentifie || userIsAdmin === true">
